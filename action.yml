@@ -1,0 +1,24 @@
+name: Create 'auto merge' pull request
+description: Create pull request tagged with an 'auto merge' label
+inputs:
+  github-token:
+    description: GitHub access token for bot
+    required: true
+  artifact-github-token:
+    description: Github token used by service account
+    required: true
+  branch-ref:
+    description: branch reference
+  title:
+    description: Custom title for the pull request
+  body:
+    description: Custom body for the pull request
+  base:
+    description: Pull request target base branch, defaults to 'master'
+
+runs:
+  using: node12
+  main: index.js
+branding:
+  icon: git-pull-request
+  color: gray-dark

@@ -1,0 +1,22 @@
+{
+  "name": "actions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "keywords": [
+    "pull_request_manager",
+    "create_pull_request"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^1.1.0"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
