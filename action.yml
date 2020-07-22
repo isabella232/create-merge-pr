@@ -7,14 +7,26 @@ inputs:
   artifact-github-token:
     description: Github token used by service account
     required: true
+  github-owner:
+    description: Orginisation owner for repo
+    required: true
+  github-repo:
+    description:
+    required: true
   branch-ref:
     description: branch reference
+    required: true
   title:
     description: Custom title for the pull request
   body:
     description: Custom body for the pull request
   base:
     description: Pull request target base branch, defaults to 'master'
+  label:
+    description: Label for pull request
+    default: manifest-generation
+  bot-user-name:
+    descrpition: Bot used to merge manifest
 
 runs:
   using: node12

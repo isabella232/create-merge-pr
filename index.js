@@ -1,17 +1,17 @@
-const GITHUB_OWNER = 'zendesk'
-const GITHUB_REPO = 'sms-dummy'
-const DEFAULT_ALLOWED_SOURCE_BRANCH_LIST = ['master']
-const PR_AUTO_LABEL_NAME = ['manifest_generation']
-
 const core = require('@actions/core')
 const github = require('@actions/github')
+
+const DEFAULT_ALLOWED_SOURCE_BRANCH_LIST = ['master']
+const GITHUB_OWNER = core.getInput('github-owner')
+const GITHUB_REPO = core.getInput('github-repo')
+const BRANCH_REF = core.getInput('branch-ref')
+const PR_AUTO_LABEL_NAME = core.getInput('label')
+const BOT_USER_NAME = core.getInput('bot-user-name')
 
 const githubToken_action = core.getInput('github-token')
 const githubToken_artifact = core.getInput('artifact-github-token')
 const octokit_action = new github.GitHub(githubToken_action)
 const octokit_artifact = new github.GitHub(githubToken_artifact)
-const botUserName = 'zd-svc-artifactbuilder-ci'
-const BRANCH_REF = core.getInput('branch-ref')
 
 
 function writeError(msg) {
@@ -54,7 +54,7 @@ async function createLabel (pullRequestNum) {
 }
 
 function submittedByBot (pullRequest) {
-  return pullRequest.user.login === botUserName
+  return pullRequest.user.login === BOT_USER_NAME
 }
 
 async function isAutoMergePr (pullRequest) {
@@ -182,7 +182,7 @@ async function getPullRequest (pullRequestNum) {
 try {
   const run = async () => {
     // fetch action inputs
-    const title = "Automatic Merge of Generated Kubernetes Manifest"
+    const title = core.getInput('title') 
     const body = core.getInput('body')
     let base = core.getInput('base')
 
