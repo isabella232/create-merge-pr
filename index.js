@@ -183,14 +183,6 @@ try {
     // Start of PR Merge
     isApproved = await approvePullRequest(pullRequestNum)
 
-    const prMergeState = await getPrMergeableState(pullRequestNum).then(state => state).catch()
-
-    if (!['clean'].includes(prMergeState)) {
-      const err = 'Can\'t merge pull request, merge state: ' + prMergeState
-      console.log(err)
-      throw err
-    }
-
     mergePullRequest(pullRequestNum)
 
   }
