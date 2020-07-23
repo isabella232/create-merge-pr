@@ -53,41 +53,6 @@ async function createLabel (pullRequestNum) {
   }
 }
 
-function submittedByBot (pullRequest) {
-  return pullRequest.user.login === BOT_USER_NAME
-}
-
-async function isAutoMergePr (pullRequest) {
-  const isBot = submittedByBot(pullRequest)
-
-  return isBot
-}
-
-async function getPrReviews (pullRequestNum) {
-  try {
-    const { data: reviews } = await octokit_action.pulls.listReviews({
-      owner: GITHUB_OWNER,
-      repo: GITHUB_REPO,
-      pull_number: pullRequestNum
-    })
-
-    return reviews
-  } catch (error) {
-    console.log(`Failed to get pull request reviews: ${error}`)
-  }
-}
-
-async function isPrApproved (pullRequestNum) {
-  const reviews = await getPrReviews(pullRequestNum)
-
-  let isApproved = false
-  if (reviews.length > 0) {
-    isApproved = reviews[reviews.length - 1].state === 'APPROVED'
-  }
-
-  return isApproved
-}
-
 async function getPrMergeableState (pullRequestNum) {
   return new Promise((resolve, reject) => {
     let tries = 0
@@ -216,12 +181,7 @@ try {
     createLabel(pullRequest.number)
 
     // Start of PR Merge
-
-    let isApproved = await isPrApproved(pullRequestNum)
-
-    if (!isApproved) {
-      isApproved = await approvePullRequest(pullRequestNum)
-    }
+    isApproved = await approvePullRequest(pullRequestNum)
 
     const prMergeState = await getPrMergeableState(pullRequestNum).then(state => state).catch()
 
