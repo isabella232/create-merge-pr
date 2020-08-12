@@ -24,7 +24,6 @@ inputs:
     description: Pull request target base branch, defaults to 'master'
   label:
     description: Label for pull request
-    default: manifest-generation
   bot-user-name:
     descrpition: Bot used to merge manifest
 

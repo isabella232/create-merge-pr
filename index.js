@@ -5,7 +5,6 @@ const DEFAULT_ALLOWED_SOURCE_BRANCH_LIST = ['master']
 const GITHUB_OWNER = core.getInput('github-owner')
 const GITHUB_REPO = core.getInput('github-repo')
 const BRANCH_REF = core.getInput('branch-ref')
-const PR_AUTO_LABEL_NAME = core.getInput('label')
 const BOT_USER_NAME = core.getInput('bot-user-name')
 
 const githubToken_action = core.getInput('github-token')
@@ -44,7 +43,7 @@ async function createLabel (pullRequestNum) {
       owner: GITHUB_OWNER,
       repo: GITHUB_REPO,
       issue_number: pullRequestNum,
-      labels: [PR_AUTO_LABEL_NAME]
+      labels: [manifest_generation, skip_tests]
     })
 
     return label
