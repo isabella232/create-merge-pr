@@ -37,13 +37,13 @@ async function createPullRequest (head, base, title, body) {
   }
 }
 
-async function createLabel (pullRequestNum, label) {
+async function createLabel (pullRequestNum) {
   try {
     const { data: label } = await octokit_artifact.issues.addLabels({
       owner: GITHUB_OWNER,
       repo: GITHUB_REPO,
       issue_number: pullRequestNum,
-      labels: [label]
+      labels: ['manifest_generation', 'skip_tests']
     })
 
     return label
@@ -177,8 +177,7 @@ try {
     const pullRequestNum = pullRequest.number
 
     console.log(`Pull request #${pullRequestNum} successfully created`)
-    createLabel(pullRequest.number, "manifest_generation")
-    createLabel(pullRequest.number, "skip_tests")
+    createLabel(pullRequest.number)
 
     // Start of PR Merge
     isApproved = await approvePullRequest(pullRequestNum)
