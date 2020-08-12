@@ -43,7 +43,7 @@ async function createLabel (pullRequestNum, label) {
       owner: GITHUB_OWNER,
       repo: GITHUB_REPO,
       issue_number: pullRequestNum,
-      labels: label
+      labels: [label]
     })
 
     return label
