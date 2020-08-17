@@ -52,7 +52,11 @@ async function createLabel (pullRequestNum) {
   }
 }
 
-
+// If PR is in an clean, dirty or unstable state, it will be resolved and marked as mergable
+// Clean means PR has no issues
+// Dirty means pr has minor issues
+// Unstable means checks are still running
+// If the PR is in a blocked state, a required check, it will retry until it isn't blocked anymore or it's hit the limit of 7
 async function getPrMergeableState (pullRequestNum) {
   return new Promise((resolve, reject) => {
     let tries = 0
@@ -62,7 +66,7 @@ async function getPrMergeableState (pullRequestNum) {
         const pullRequest = await getPullRequest(pullRequestNum)
         const prMergeState = pullRequest.mergeable_state
         console.log(prMergeState)
-        if (prMergeState === 'clean' || prMergeState === 'dirty') {
+        if (prMergeState === 'clean' || prMergeState === 'dirty' || prMergeState == 'unstable') {
           resolve(prMergeState)
           return
         } else if (tries > 7) {
