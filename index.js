@@ -52,21 +52,6 @@ async function createLabel (pullRequestNum) {
   }
 }
 
-async function stateOfChecksAndStatus (commitSha) {
-  const { data: statuses } = await octokit.repos.listStatusesForRef({
-    owner: githubOwner,
-    repo: githubRepo,
-    ref: commitSha,
-    per_page: 100
-  })
-  for (let i = 0; i < statuses.length; i++) {
-    const state = statuses[i].state
-    if (state === 'error' || state === 'failure') {
-      return 'reject'
-    } else if (state === 'pending') {
-      return 'wait'
-    }
-  }
 
 async function getPrMergeableState (pullRequestNum) {
   return new Promise((resolve, reject) => {
@@ -85,18 +70,6 @@ async function getPrMergeableState (pullRequestNum) {
           reject(new Error('Pull request mergeable state is unknown'))
           return
         } else {
-          if (prMergeState === 'unstable') {
-            const state = await stateOfChecksAndStatus(pullRequest.head.sha)
-            if (state === 'resolve') {
-              console.log('Pull request clean state because of github action')
-              resolve('clean')
-              return
-            } else if (state === 'reject') {
-              console.log('Pull request rejected because of some failure')
-              reject(prMergeState)
-              return
-            }
-          }
           // Total time given to PR stable minutes:seconds
           // Interval 1 - 0:33
           // Interval 2 - 1:07
