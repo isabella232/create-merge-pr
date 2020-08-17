@@ -52,6 +52,22 @@ async function createLabel (pullRequestNum) {
   }
 }
 
+async function stateOfChecksAndStatus (commitSha) {
+  const { data: statuses } = await octokit.repos.listStatusesForRef({
+    owner: githubOwner,
+    repo: githubRepo,
+    ref: commitSha,
+    per_page: 100
+  })
+  for (let i = 0; i < statuses.length; i++) {
+    const state = statuses[i].state
+    if (state === 'error' || state === 'failure') {
+      return 'reject'
+    } else if (state === 'pending') {
+      return 'wait'
+    }
+  }
+
 async function getPrMergeableState (pullRequestNum) {
   return new Promise((resolve, reject) => {
     let tries = 0
