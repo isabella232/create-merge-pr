@@ -43,7 +43,7 @@ async function createLabel (pullRequestNum) {
       owner: GITHUB_OWNER,
       repo: GITHUB_REPO,
       issue_number: pullRequestNum,
-      labels: ['manifest_generation', 'skip_tests'],
+      labels: ['manifest_generation', 'skip_tests']
     })
 
     return label
