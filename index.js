@@ -66,7 +66,7 @@ async function getPrMergeableState (pullRequestNum) {
         const pullRequest = await getPullRequest(pullRequestNum)
         const prMergeState = pullRequest.mergeable_state
         console.log(prMergeState)
-        if (prMergeState === 'clean' || prMergeState === 'dirty' || prMergeState == 'unstable') {
+        if (prMergeState === 'clean' || prMergeState === 'dirty') {
           resolve(prMergeState)
           return
         } else if (tries > 7) {
@@ -74,6 +74,9 @@ async function getPrMergeableState (pullRequestNum) {
           reject(new Error('Pull request mergeable state is unknown'))
           return
         } else {
+          if (prMergeState === 'unstable') {
+            console.log('Pull Request has checks still running, waiting for checks to finish')
+          }
           // Total time given to PR stable minutes:seconds
           // Interval 1 - 0:33
           // Interval 2 - 1:07
