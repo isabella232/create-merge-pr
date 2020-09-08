@@ -69,7 +69,7 @@ async function getPrMergeableState (pullRequestNum) {
         if (prMergeState === 'clean' || prMergeState === 'dirty') {
           resolve(prMergeState)
           return
-        } else if (tries > 7) {
+        } else if (tries > 12) {
           console.log('Pull request mergeable state is unknown')
           reject(new Error('Pull request mergeable state is unknown'))
           return
