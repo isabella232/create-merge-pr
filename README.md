@@ -1,4 +1,4 @@
-# talk-create-merge-pr
+# create-merge-pr
 
 This action downloads creates a pull request and automatically merges it.
 
