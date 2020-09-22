@@ -62,6 +62,7 @@ async function getPrMergeableState (pullRequestNum) {
     let tries = 0
     const retryUntilStateKnown = async () => {
       try {
+        console.log(`Attempting to get pull request state`)
         tries++
         const pullRequest = await getPullRequest(pullRequestNum)
         const prMergeState = pullRequest.mergeable_state
@@ -69,7 +70,7 @@ async function getPrMergeableState (pullRequestNum) {
         if (prMergeState === 'clean' || prMergeState === 'dirty') {
           resolve(prMergeState)
           return
-        } else if (tries > 12) {
+        } else if (tries > 25) {
           console.log('Pull request mergeable state is unknown')
           reject(new Error('Pull request mergeable state is unknown'))
           return
@@ -77,24 +78,15 @@ async function getPrMergeableState (pullRequestNum) {
           if (prMergeState === 'unstable') {
             console.log('Pull Request has checks still running, waiting for checks to finish')
           }
-          // Total time given to PR stable minutes:seconds
-          // Interval 1 - 0:33
-          // Interval 2 - 1:07
-          // Interval 3 - 1:40
-          // Interval 4 - 2:13
-          // Interval 5 - 2:47
-          // Interval 6 - 3.20
-          // Total      - 10.6
-          const timeout = Math.floor((10000 * (tries * 10)) / 3)
-          console.log('timeout', timeout)
-          setTimeout(retryUntilStateKnown, timeout)
+          console.log('Pull request not ready, waiting 60 seconds and then trying again')
+          setTimeout(retryUntilStateKnown, 60000)
         }
       } catch (error) {
         console.log(`Failed getting merge state of pull request: ${error}`)
         reject(error)
       }
     }
-    retryUntilStateKnown()
+    retryUntilStateKnown
   })
 }
 
