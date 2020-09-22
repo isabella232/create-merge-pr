@@ -9,7 +9,7 @@ Every 30 seconds it will attempt to get the PR state. Onces the state is clean i
 
 | Parameter | Description |
 | ----------- | -------- |
-| github-token | Personal access token used to approve and merge the pull request |
+| github-token | Personal access token used to approve and merge the pull request (github action bot can be used for this using ${{ secrets.GITHUB_TOKEN }}) |
 | artifact-github-token | Personal access token used to create the pull request |
 | github-owner | The owner of the repo being used |
 | github-repo | The repo you want to create and merge the PR |
